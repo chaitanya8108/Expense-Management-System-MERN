@@ -1,6 +1,7 @@
- [build]
+[build]
 command = "npm run build"
-publish = "./client/build"
+publish = "client/build"  # Specify the correct path relative to the root
+
 
 
 [context.production.environment]
