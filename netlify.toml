@@ -1,6 +1,6 @@
 [build]
-command = "cd client && npm run build"  # Navigating to the 'client' folder and running 'npm run build'
-publish = "client/build"  # Path to the build directory inside the 'client' folder
+  command = "cd client && npm install && npm run build"  # Ensure all dependencies are installed in the client directory
+  publish = "client/build"  # Path to the build folder in the 'client' directory
 
 [context.production.environment]
-MONGO_URI = "mongodb://chaitanya81082430:Csgl2318159@expensecluster-shard-00-00.kkfwv.mongodb.net:27017,expensecluster-shard-00-01.kkfwv.mongodb.net:27017,expensecluster-shard-00-02.kkfwv.mongodb.net:27017/ExpenseDB?replicaSet=atlas-4fs2r1-shard-0&ssl=true&authSource=admin"
+  MONGO_URI = "mongodb://chaitanya81082430:Csgl2318159@expensecluster-shard-00-00.kkfwv.mongodb.net:27017,expensecluster-shard-00-01.kkfwv.mongodb.net:27017,expensecluster-shard-00-02.kkfwv.mongodb.net:27017/ExpenseDB?replicaSet=atlas-4fs2r1-shard-0&ssl=true&authSource=admin"
