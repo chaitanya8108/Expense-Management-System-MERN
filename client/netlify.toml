@@ -1,0 +1,10 @@
+[build]
+  # Command to build your project
+  command = "npm run build"
+  
+  # Directory where the built files are located
+  publish = "client/build"
+
+[context.production.environment]
+  # Any environment variables you need in production
+  MONGO_URI = "mongodb://chaitanya81082430:Csgl2318159@expensecluster-shard-00-00.kkfwv.mongodb.net:27017,expensecluster-shard-00-01.kkfwv.mongodb.net:27017,expensecluster-shard-00-02.kkfwv.mongodb.net:27017/ExpenseDB?replicaSet=atlas-4fs2r1-shard-0&ssl=true&authSource=admin"
