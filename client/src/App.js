@@ -12,8 +12,13 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <>
+      {/* Header */}
       <Header />
+
+      {/* Main Content */}
+
       <Routes>
+        {/* Home Page */}
         <Route
           path="/"
           element={
@@ -22,8 +27,14 @@ function App() {
             </ProtectedRoutes>
           }
         />
+
+        {/* Register Page */}
         <Route path="/register" element={<Register />} />
+
+        {/* Login Page */}
         <Route path="/login" element={<Login />} />
+
+        {/* Expense Page */}
         <Route
           path="/expense"
           element={
@@ -32,22 +43,14 @@ function App() {
             </ProtectedRoutes>
           }
         />
-        <Route
-          path="/about"
-          element={
-            <ProtectedRoutes>
-              <About />
-            </ProtectedRoutes>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <ProtectedRoutes>
-              <Contact />
-            </ProtectedRoutes>
-          }
-        />
+
+        {/* About Page */}
+        <Route path="/about" element={<About />} />
+
+        {/* Contact Page */}
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Dashboard Page */}
         <Route
           path="/dashboard"
           element={
@@ -57,10 +60,13 @@ function App() {
           }
         />
       </Routes>
+
+      {/* Footer */}
       <Footer />
     </>
   );
 }
+
 export function ProtectedRoutes(props) {
   if (localStorage.getItem("user")) {
     return props.children;

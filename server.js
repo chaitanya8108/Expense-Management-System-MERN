@@ -2,17 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
-const colors = require("colors");
 const connectDb = require("./config/connectDb");
 const fs = require("fs");
 const path = require("path");
-
+const emailRoutes = require("./routes/emailRoutes");
 
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir); // Create the directory if it doesn't exist
 }
-
 
 // config dot env file
 dotenv.config();
@@ -30,7 +28,8 @@ app.use(cors());
 
 //routes
 app.use("/api/v1/users", require("./routes/userRoute"));
-app.use("/api/v1/users", require("./routes/expenseRoute"));
+// app.use("/api/v1/users", require("./routes/expenseRoute"));
+app.use("/api/v1/users", emailRoutes);
 
 //port
 const PORT = 8080 || process.env.PORT;

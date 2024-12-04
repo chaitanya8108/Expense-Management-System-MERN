@@ -1,0 +1,35 @@
+.footer {
+  height: auto;
+  width: -webkit-fill-available;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.8rem 0px;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .links {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .copyright {
+    font-size: 1rem;
+  }
+
+  /* .lord {
+    width: 4rem;
+    height: 3.5rem;
+  } */
+}

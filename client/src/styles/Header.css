@@ -1,0 +1,17 @@
+.navbar {
+  /* background-color: lightgray; */
+  border-bottom: 0.5px solid lightgray;
+  display: flex;
+  flex: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brandLogo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: -webkit-fill-available;
+  padding: 0 1rem;
+}

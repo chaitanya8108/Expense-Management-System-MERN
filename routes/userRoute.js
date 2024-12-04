@@ -9,6 +9,10 @@ const {
   expenseGetController,
   expenseRegisterController,
   getUserController,
+  expenseDeleteController,
+  deleteAllExpensesController,
+  searchExpenses,
+  searchExpensesByExpenseName,
 } = require("../controllers/userController");
 
 // Router object
@@ -48,6 +52,15 @@ router.post("/upload-avatar", upload.single("avatar"), uploadAvatar);
 router.post("/add-expense", expenseRegisterController);
 
 // GET || FETCH EXPENSE
-router.get("/expense", expenseGetController);
+router.get("/expense/:expenseId", expenseGetController);
+
+// DELETE || DELETE EXPENSE
+router.delete("/expense/:expenseId", expenseDeleteController);
+
+// DELETE || DELETE EXPENSE
+router.delete("/expense/deleteAll/:userId", deleteAllExpensesController);
+
+// Search expenses by name (GET request)
+router.get("/:userId/expenses", searchExpensesByExpenseName);
 
 module.exports = router;
