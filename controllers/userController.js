@@ -259,48 +259,6 @@ const deleteAllExpensesController = async (req, res) => {
 };
 
 // Search expenses by name for a specific user
-const searchExpenses = async (req, res) => {
-  try {
-    const { userId, query } = req.query;
-
-    // Validate userId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({
-        message: "Invalid user ID format. Please provide a valid ObjectId.",
-      });
-    }
-
-    // Validate query
-    if (!query || query.trim() === "") {
-      return res.status(400).json({
-        message: "Query cannot be empty.",
-      });
-    }
-
-    // Find the user by ID
-    const user = await userModel.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Filter the user's expenses based on the query
-    const filteredExpenses = user.expense.filter((expense) => {
-      return expense.expname.toLowerCase().includes(query.toLowerCase());
-    });
-
-    if (filteredExpenses.length > 0) {
-      return res.status(200).json(filteredExpenses);
-    } else {
-      return res
-        .status(404)
-        .json({ message: "No expenses found matching the query" });
-    }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error", error });
-  }
-};
 
 const searchExpensesByExpenseName = async (req, res) => {
   console.log("Searching for expenses...");
@@ -345,6 +303,5 @@ module.exports = {
   getUserController,
   expenseDeleteController,
   deleteAllExpensesController,
-  searchExpenses,
   searchExpensesByExpenseName,
 };

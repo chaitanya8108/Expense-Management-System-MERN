@@ -11,7 +11,6 @@ const {
   getUserController,
   expenseDeleteController,
   deleteAllExpensesController,
-  searchExpenses,
   searchExpensesByExpenseName,
 } = require("../controllers/userController");
 
