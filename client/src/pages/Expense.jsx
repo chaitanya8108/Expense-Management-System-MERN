@@ -103,10 +103,11 @@ const Expense = () => {
       const results = await searchExpensesByExpenseName(userId, searchQuery);
       setFilteredExpenses(results);
       setIsSearchModalVisible(false);
-      message.success("Search completed successfully!");
+      setSearchQuery("");
+      message.success(`${results.length} Expenses found`);
     } catch (error) {
       console.error("Error searching for expenses:", error);
-      message.error("An error occurred while searching for expenses.");
+      message.error("No matching expenses.");
     }
   };
 
@@ -232,11 +233,13 @@ const Expense = () => {
           placeholder="Enter expense name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          // className="rounded mb-4"
         />
         <Button
           type="primary"
           style={{ marginTop: "10px" }}
           onClick={handleSearchClick}
+          // className="w-full"
         >
           Search
         </Button>

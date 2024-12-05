@@ -137,7 +137,7 @@ const Header = () => {
           </Link>
 
           {/* Profile Dropdown for Large Devices */}
-          <div className="relative ml-4 mr-4" ref={profileDropdownRef}>
+          <div className="relative ml-4 mr-4 z-50" ref={profileDropdownRef}>
             <button
               className="flex items-center space-x-2"
               onClick={handleProfileClick}
