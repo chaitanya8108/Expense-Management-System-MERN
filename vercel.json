@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "client/package.json",
-      "use": "@vercel/react"
+      "use": "@vercel/static-build"
     },
     {
       "src": "Backend/server.js",
