@@ -38,9 +38,9 @@ export const deleteExpenseById = async (expenseId) => {
     return;
   }
 
-  const userId = user._id; // Get the userId from the stored user data
+  // const userId = user._id;
   try {
-    const response = await axios.delete(`${API}/expense/${expenseId}`, {
+    await axios.delete(`${API}/expense/${expenseId}`, {
       headers: {
         Authorization: `Bearer ${user.token}`, // Send token if authentication is needed
       },
