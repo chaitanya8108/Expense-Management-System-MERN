@@ -71,6 +71,11 @@
 }
 
 .expense-card {
+  background: linear-gradient(
+    90deg,
+    hsla(0, 100%, 85%, 1) 0%,
+    hsla(0, 0%, 100%, 1) 74%
+  );
   width: 48%; /* Adjust width for two cards per row */
   background-color: white;
   margin: 0.5rem;
@@ -85,7 +90,7 @@
 
 .expense-card li {
   margin: 0.5rem 0;
-  font-size: medium;
+  font-size: small;
 }
 
 /* .font-serif {
@@ -120,6 +125,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.listDiv {
+  border: 0.5px solid rgb(240, 240, 240);
+  background-color: rgb(255, 255, 255);
 }
 
 @media (max-width: 860px) {

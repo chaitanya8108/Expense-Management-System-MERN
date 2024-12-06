@@ -44,7 +44,7 @@ const Header = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); // This will run once when the component mounts
+  }, [localStorage.getItem("user")]); // This will run once when the component mounts
   // The empty array means the effect runs only on mount
 
   const logoutHandler = () => {

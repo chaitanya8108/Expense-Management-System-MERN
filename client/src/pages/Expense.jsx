@@ -113,16 +113,16 @@ const Expense = () => {
 
   const cardColor = () => {
     const colors = [
-      "#e0e1dd",
-      "#e9edc9",
-      "#caf0f8",
-      "#ffcdb2",
-      "#ffe5ec",
-      "#edf6f9",
-      "#f8edeb",
-      "#fdc5f5",
-      "#cddafd",
-      "#e9f5db",
+      "#ebf4f5",
+      // "#e9edc9",
+      // "#caf0f8",
+      // "#ffcdb2",
+      // "#ffe5ec",
+      // "#edf6f9",
+      // "#f8edeb",
+      // "#fdc5f5",
+      // "#cddafd",
+      // "#e9f5db",
     ];
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
@@ -146,7 +146,7 @@ const Expense = () => {
                     className="expense-card border hover:shadow-xl font-serif"
                     style={{ backgroundColor: cardColor() }}
                   >
-                    <div>
+                    <div className="listDiv p-2  rounded shadow-md">
                       <li>Expense Name : {expense.expname}</li>
                       <li>Expense Amount (INR) : {expense.expamount}</li>
                       <li>Amount Category : {expense.expamounttype}</li>
@@ -155,13 +155,48 @@ const Expense = () => {
                         {new Date(expense.expdate).toLocaleDateString()}
                       </li>
                     </div>
-                    <div className="">
-                      <button
+                    <div className="card-operations flex flex-col justify-between items-center">
+                      {/* <button
                         className="btn btn-danger"
                         onClick={() => handleDeleteExpenseById(expense._id)}
                       >
                         delete
-                      </button>
+                      </button> */}
+                      <div className="del shadow-md rounded">
+                        <ErrorBoundary>
+                          <lord-icon
+                            src="https://cdn.lordicon.com/qrsdbrog.json"
+                            trigger="loop"
+                            delay="900"
+                            stroke="light"
+                            state="in-reveal"
+                            colors="primary:#0a5c15,secondary:#e83a30,tertiary:#fad3d1"
+                            style={{
+                              width: "2.5rem",
+                              height: "2.5rem",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleDeleteExpenseById(expense._id)}
+                          ></lord-icon>
+                        </ErrorBoundary>
+                      </div>
+                      <div className="edit shadow-md rounded">
+                        <ErrorBoundary>
+                          <lord-icon
+                            src="https://cdn.lordicon.com/lsrcesku.json"
+                            trigger="loop"
+                            delay="900"
+                            stroke="light"
+                            state="in-reveal"
+                            colors="primary:#0a5c15,secondary:#848484,tertiary:#9cf4a7,quaternary:#ffffff"
+                            style={{
+                              width: "2.5rem",
+                              height: "2.5rem",
+                              cursor: "pointer",
+                            }}
+                          ></lord-icon>
+                        </ErrorBoundary>
+                      </div>
                     </div>
                   </ul>
                 ))}
