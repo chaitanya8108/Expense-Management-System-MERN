@@ -2,3 +2,9 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+
+[build]
+  base = "/"
+  publish = "client/build"
+  command = "cd client && npm run build"
