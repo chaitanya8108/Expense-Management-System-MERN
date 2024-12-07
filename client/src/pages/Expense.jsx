@@ -146,7 +146,7 @@ const Expense = () => {
               stroke="bold"
               state="loop-cycle"
               colors="primary:#16c72e,secondary:#d1fad7"
-              style={{ width: "100px", height: "100px" }}
+              style={{ width: "50px", height: "50px" }}
             ></lord-icon>
           </ErrorBoundary>
         ) : filteredExpenses.length > 0 ? (
