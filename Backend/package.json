@@ -1,5 +1,5 @@
 {
-  "name": "Expense-Management-System",
+  "name": "Backend",
   "version": "1.0.0",
   "description": "expense tracker app",
   "main": "server.js",
