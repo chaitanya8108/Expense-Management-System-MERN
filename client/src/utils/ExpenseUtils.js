@@ -2,7 +2,8 @@
 import axios from "axios";
 import { message } from "antd";
 
-const API = "http://localhost:8080/api/v1/users";
+const API =
+  "https://expense-management-system-mern-rho.vercel.app/api/v1/users";
 
 export const getExpense = async () => {
   const user = JSON.parse(localStorage.getItem("user")); // Fetch user data from localStorage

@@ -42,7 +42,9 @@ router.post("/login", loginController);
 router.post("/register", registerController);
 
 //GET USER
-router.get("/:userId", getUserController);
+router.get("/:userId", getUserController, (req, res) => {
+  res.status(200).json({ user: res.user });
+});
 
 // POST || UPLOAD AVATAR
 router.post("/upload-avatar", upload.single("avatar"), uploadAvatar);
@@ -51,7 +53,9 @@ router.post("/upload-avatar", upload.single("avatar"), uploadAvatar);
 router.post("/add-expense", expenseRegisterController);
 
 // GET || FETCH EXPENSE
-router.get("/expense/:expenseId", expenseGetController);
+router.get("/expense/:expenseId", expenseGetController, (req, res) => {
+  res.status(200).json({ expense: res.expense });
+});
 
 // DELETE || DELETE EXPENSE
 router.delete("/expense/:expenseId", expenseDeleteController);
