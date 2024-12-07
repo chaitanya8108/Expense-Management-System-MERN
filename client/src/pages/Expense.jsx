@@ -16,10 +16,12 @@ const Expense = () => {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isSearchModalVisible, setIsSearchModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false); // New loading state
 
   useEffect(() => {
     // Fetching expenses when component mounts
     const fetchExpenses = async () => {
+      setLoading(true); // Set loading to true before fetching
       const expenses = await handleExpenseButtonClick(); // Get expenses from API
       if (expenses && expenses.length) {
         setExpenseArray(expenses);
@@ -27,6 +29,7 @@ const Expense = () => {
       } else {
         console.log("No expenses found.");
       }
+      setLoading(false); // Set loading to false after data is fetched
     };
 
     fetchExpenses();
@@ -130,6 +133,20 @@ const Expense = () => {
 
   return (
     <div className="expense">
+      {/* Show Lord Icon spinner while loading */}
+      {loading && (
+        <div className="loading-spinner">
+          <lord-icon
+            src="https://cdn.lordicon.com/idylhtwd.json"
+            trigger="loop"
+            stroke="bold"
+            state="loop-cycle"
+            colors="primary:#16c72e,secondary:#d1fad7"
+            style={{ width: "250px", height: "250px" }}
+          ></lord-icon>
+        </div>
+      )}
+
       <div
         className={`leftDiv ${
           filteredExpenses.length > 0 ? "leftDivStart" : "leftDivCenter"
@@ -241,43 +258,27 @@ const Expense = () => {
           <button onClick={handleDashboardClick} className="btn btn-dark">
             Dashboard
           </button>
-        </div>
-        <div className="deleteAll">
-          <ErrorBoundary>
-            <lord-icon
-              src="https://cdn.lordicon.com/xekbkxul.json"
-              trigger="morph"
-              state="morph-trash-in"
-              colors="primary:#121331,secondary:#30c9e8,tertiary:#b4b4b4,quaternary:#faddd1"
-              style={{ width: "3rem", height: "3rem", cursor: "pointer" }}
-              onClick={handleDeleteAllExpenses}
-            ></lord-icon>
-          </ErrorBoundary>
-          <strong className="delAllText mb-5">Delete all Expenses</strong>
+          <button
+            onClick={handleDeleteAllExpenses}
+            className="btn btn-danger mt-4"
+          >
+            Delete All
+          </button>
         </div>
       </div>
 
       {/* Search Modal */}
       <Modal
         title="Search Expense"
-        open={isSearchModalVisible}
+        visible={isSearchModalVisible}
+        onOk={handleSearchClick}
         onCancel={() => setIsSearchModalVisible(false)}
-        footer={null}
       >
         <Input
-          placeholder="Enter expense name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          // className="rounded mb-4"
+          placeholder="Enter expense name"
         />
-        <Button
-          type="primary"
-          style={{ marginTop: "10px" }}
-          onClick={handleSearchClick}
-          // className="w-full"
-        >
-          Search
-        </Button>
       </Modal>
     </div>
   );
