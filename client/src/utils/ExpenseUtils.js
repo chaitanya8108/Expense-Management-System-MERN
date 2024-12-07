@@ -39,20 +39,12 @@ export const deleteExpenseById = async (expenseId) => {
     return;
   }
 
-  // const userId = user._id;
   try {
     await axios.delete(`${API}/expense/${expenseId}`, {
       headers: {
         Authorization: `Bearer ${user.token}`, // Send token if authentication is needed
       },
     });
-    // const expense = await axios.get(`${API}/${userId}`);
-    // if (expenseId === expense.data.user.expense[0]._id) {
-    //   message.success(
-    //     `Expense ${expense.data.user.expense[0].expname} deleted successfully`
-    //   );
-    // }
-
     console.log("expense deleted : ", expenseId);
     // Optionally update local storage or UI here to reflect the deletion
   } catch (error) {
