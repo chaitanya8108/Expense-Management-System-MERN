@@ -28,10 +28,13 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://expense-management-system-mern-client.onrender.com/",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST"],
     credentials: true,
   })
 );
+
+// Serve static files
+app.use(express.static("public")); // Adjust this if your assets are in a different folder
 
 //routes
 app.use("/api/v1/users", require("./routes/userRoute"));
