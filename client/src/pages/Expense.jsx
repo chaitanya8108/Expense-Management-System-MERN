@@ -138,7 +138,17 @@ const Expense = () => {
         }`}
       >
         {loading ? ( // Conditionally render spinner while loading
-          <Spin size="large" className="loading-spinner" />
+          // <Spin size="large" className="loading-spinner" />
+          <ErrorBoundary>
+            <lord-icon
+              src="https://cdn.lordicon.com/idylhtwd.json"
+              trigger="loop"
+              stroke="bold"
+              state="loop-cycle"
+              colors="primary:#16c72e,secondary:#d1fad7"
+              style={{ width: "100px", height: "100px" }}
+            ></lord-icon>
+          </ErrorBoundary>
         ) : filteredExpenses.length > 0 ? (
           <div className="div2">
             <strong className="font-serif mb-4">EXPENSES</strong>
