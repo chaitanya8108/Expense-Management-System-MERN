@@ -70,7 +70,7 @@ export const deleteAllExpenses = async () => {
   const userId = user._id; // Get the userId from the stored user data
 
   try {
-    const response = await axios.delete(`${API}/expense/deleteAll/${userId}`, {
+    await axios.delete(`${API}/expense/deleteAll/${userId}`, {
       headers: {
         Authorization: `Bearer ${user.token}`, // Send token if authentication is needed
       },

@@ -69,7 +69,11 @@ const About = () => {
                   <li className="link flex flex-row justify-between items-center w-[60%]">
                     <strong>Websie : </strong>
                     <span>
-                      <a href="https://linktr.ee/chaitanya8108" target="_blank">
+                      <a
+                        href="https://linktr.ee/chaitanya8108"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <ErrorBoundary>
                           <lord-icon
                             src="https://cdn.lordicon.com/cbigqefp.json"

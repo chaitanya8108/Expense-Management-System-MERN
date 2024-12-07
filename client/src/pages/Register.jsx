@@ -31,24 +31,28 @@ const Register = () => {
       <div className="register-page min-h-[100vh] max-w-[100vw] flex flex-col justify-center items-center">
         {loading && <Spinner />}
         <strong className=" text-3xl font-serif">Register</strong>
-        <Form layout="vertical" onFinish={submitHandler}  className="min-h-[50vh] min-w-[30vw] p-5">
+        <Form
+          layout="vertical"
+          onFinish={submitHandler}
+          className="min-h-[50vh] min-w-[30vw] p-5"
+        >
           <Form.Item label="Name" name="name" className="font-serif">
-            <Input className="p-2 rounded hover:shadow-xl"/>
+            <Input className="p-2 rounded hover:shadow-xl" />
           </Form.Item>
           <Form.Item label="Email" name="email" className="font-serif">
-            <Input type="email" className="p-2 rounded hover:shadow-xl"/>
+            <Input type="email" className="p-2 rounded hover:shadow-xl" />
           </Form.Item>
           <Form.Item label="Password" name="password" className="font-serif">
-            <Input type="password" className="p-2 rounded hover:shadow-xl"/>
+            <Input type="password" className="p-2 rounded hover:shadow-xl" />
           </Form.Item>
           <div className="flex flex-col justify-between">
-          <div className="flex flex-row justify-center items-center mb-3">
+            <div className="flex flex-row justify-center items-center mb-3">
               <strong className="mr-2 font-serif">Already a user ?</strong>
               <Link to="/login">
                 {" "}
-                <a className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif">
+                <button className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif">
                   SignIn
-                </a>
+                </button>
               </Link>
             </div>
             <button className="btn btn-primary">Register</button>

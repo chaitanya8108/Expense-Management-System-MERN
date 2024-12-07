@@ -59,9 +59,9 @@ const Login = () => {
               <strong className="mr-2 font-serif">Not a user ?</strong>
               <Link to="/register">
                 {" "}
-                <a className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif">
+                <button className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif">
                   SignUp
-                </a>
+                </button>
               </Link>
             </div>
             <button className="btn btn-primary font-serif">Login</button>
