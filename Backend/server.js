@@ -29,6 +29,7 @@ app.use(
   cors({
     origin: "https://expense-management-system-mern-client.onrender.com/",
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 
