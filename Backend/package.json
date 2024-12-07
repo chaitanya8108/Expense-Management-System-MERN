@@ -6,9 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\" "
+    "server": "nodemon server.js"
   },
   "keywords": [],
   "author": "Chaitanya8108",
