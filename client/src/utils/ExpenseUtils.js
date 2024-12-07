@@ -3,7 +3,7 @@ import axios from "axios";
 import { message } from "antd";
 
 const API =
-  "https://expense-management-system-mern-rho.vercel.app/api/v1/users";
+  "https://expense-management-system-mern-api.onrender.com/api/v1/users";
 
 export const getExpense = async () => {
   const user = JSON.parse(localStorage.getItem("user")); // Fetch user data from localStorage
