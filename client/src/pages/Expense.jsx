@@ -7,7 +7,7 @@ import {
   searchExpensesByExpenseName,
 } from "../utils/ExpenseUtils"; // Importing the API function
 import ErrorBoundary from "../utils/ErrorBoundary";
-import { message, Modal, Input, Button } from "antd";
+import { message, Modal, Input, Button, Spin } from "antd";
 import "../styles/Expense.css";
 
 const Expense = () => {
@@ -16,7 +16,7 @@ const Expense = () => {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isSearchModalVisible, setIsSearchModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true); // Start with loading true
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     // Fetching expenses when component mounts
@@ -26,9 +26,9 @@ const Expense = () => {
         setExpenseArray(expenses);
         setFilteredExpenses(expenses); // Initialize filteredExpenses
       } else {
-        setFilteredExpenses([]); // No expenses found
+        console.log("No expenses found.");
       }
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false); // Stop the spinner after data is fetched
     };
 
     fetchExpenses();
@@ -132,26 +132,14 @@ const Expense = () => {
 
   return (
     <div className="expense">
-      {/* Show Lord Icon spinner while loading */}
-      {loading ? (
-        <div className="loading-spinner w-[100%] h-[100%] flex justify-center items-center">
-          <lord-icon
-            src="https://cdn.lordicon.com/idylhtwd.json"
-            trigger="loop"
-            stroke="bold"
-            state="loop-cycle"
-            colors="primary:#16c72e,secondary:#d1fad7"
-            style={{ width: "100px", height: "100px" }}
-          ></lord-icon>
-        </div>
-      ) : filteredExpenses.length === 0 ? (
-        // If no expenses, show "No expenses found"
-        <div className="no-expenses">
-          <strong className="font-serif">No expenses found.</strong>
-        </div>
-      ) : (
-        // If expenses exist, show them
-        <div className="expense-list">
+      <div
+        className={`leftDiv ${
+          filteredExpenses.length > 0 ? "leftDivStart" : "leftDivCenter"
+        }`}
+      >
+        {loading ? ( // Conditionally render spinner while loading
+          <Spin size="large" className="loading-spinner" />
+        ) : filteredExpenses.length > 0 ? (
           <div className="div2">
             <strong className="font-serif mb-4">EXPENSES</strong>
             <div className="div3">
@@ -162,7 +150,7 @@ const Expense = () => {
                     className="expense-card border hover:shadow-xl font-serif"
                     style={{ backgroundColor: cardColor() }}
                   >
-                    <div className="listDiv p-2 rounded shadow-md">
+                    <div className="listDiv p-2  rounded shadow-md">
                       <li>Expense Name : {expense.expname}</li>
                       <li>Expense Amount (INR) : {expense.expamount}</li>
                       <li>Amount Category : {expense.expamounttype}</li>
@@ -172,6 +160,12 @@ const Expense = () => {
                       </li>
                     </div>
                     <div className="card-operations flex flex-col justify-between items-center">
+                      {/* <button
+                        className="btn btn-danger"
+                        onClick={() => handleDeleteExpenseById(expense._id)}
+                      >
+                        delete
+                      </button> */}
                       <div className="del shadow-md rounded">
                         <ErrorBoundary>
                           <lord-icon
@@ -213,9 +207,10 @@ const Expense = () => {
               </div>
             </div>
           </div>
-        </div>
-      )}
-
+        ) : (
+          <strong className="font-serif">No expenses found.</strong>
+        )}
+      </div>
       <div className="rightDiv bg-gray-100">
         <div className="searchExpense">
           <ErrorBoundary>
@@ -250,28 +245,23 @@ const Expense = () => {
           <button onClick={handleDashboardClick} className="btn btn-dark">
             Dashboard
           </button>
-          <button
-            onClick={handleDeleteAllExpenses}
-            className="btn btn-danger mt-4"
-          >
-            Delete All
-          </button>
+        </div>
+        <div className="deleteAll">
+          <ErrorBoundary>
+            <lord-icon
+              src="https://cdn.lordicon.com/xekbkxul.json"
+              trigger="morph"
+              state="morph-trash-in"
+              colors="primary:#121331,secondary:#30c9e8,tertiary:#b4b4b4,quaternary:#faddd1"
+              style={{ width: "3rem", height: "3rem", cursor: "pointer" }}
+              onClick={handleDeleteAllExpenses}
+            ></lord-icon>
+          </ErrorBoundary>
+          <strong className="delAllText mb-4">
+            Delete All Expenses <span>(Delete all)</span>
+          </strong>
         </div>
       </div>
-
-      {/* Search Modal */}
-      <Modal
-        title="Search Expense"
-        visible={isSearchModalVisible}
-        onOk={handleSearchClick}
-        onCancel={() => setIsSearchModalVisible(false)}
-      >
-        <Input
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Enter expense name"
-        />
-      </Modal>
     </div>
   );
 };
