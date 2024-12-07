@@ -10,7 +10,10 @@ const Login = () => {
   const submitHandler = async (values) => {
     try {
       setLoading(true);
-      const { data } = await axios.post("/users/login", values);
+      const { data } = await axios.post(
+        "https://expense-management-system-mern-api.onrender.com/api/v1/users/login",
+        values
+      );
       setLoading(false);
       message.success("Login successful");
 
