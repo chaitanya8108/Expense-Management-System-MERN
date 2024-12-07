@@ -32,7 +32,7 @@ const Expense = () => {
     };
 
     fetchExpenses();
-  }, []);
+  });
 
   const sumExpense = (expenses) => {
     return expenses.reduce((total, expense) => total + expense.expamount, 0);
