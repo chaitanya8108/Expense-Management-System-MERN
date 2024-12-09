@@ -112,6 +112,9 @@ const Header = ({ onLogout }) => {
           {/* Conditionally Rendered Hamburger Menu Items */}
           {menuOpen && (
             <ul className="absolute top-12 right-0 bg-white shadow-lg rounded-lg p-4 space-y-4 w-full z-50">
+              <p className="px-4 py-2 text-gray-700 font-serif border-b-2 text-center">
+                {loginUser.name}
+              </p>
               <Link to="/expense">
                 <li className="text-gray-500 hover:text-black mb-2">Expense</li>
               </Link>
