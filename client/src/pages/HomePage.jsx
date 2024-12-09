@@ -4,7 +4,9 @@ import axios from "axios";
 import ErrorBoundary from "../utils/ErrorBoundary";
 import "../styles/HomePage.css";
 
-const API_URL = "http://localhost:8080/api/v1/users/add-expense"; // Replace with your actual API endpoint
+// const API_URL = "http://localhost:8080/api/v1/users/add-expense"; // Replace with your actual API endpoint
+const API_URL =
+  "https://expense-management-system-mern-api.onrender.com/api/v1/users/add-expense";
 
 const HomePage = () => {
   const [userId, setUserId] = useState(null);
