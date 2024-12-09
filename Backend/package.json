@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
+    "build": "cd ../client && npm run build",
     "start": "node server.js",
     "server": "nodemon server.js"
   },
