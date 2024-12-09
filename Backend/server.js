@@ -44,6 +44,14 @@ app.use("/api/v1/users", require("./routes/userRoute"));
 // app.use("/api/v1/users", require("./routes/expenseRoute"));
 app.use("/api/v1/users", emailRoutes);
 
+// Serve static files
+app.use(express.static(path.join(__dirname, "build"))); // Adjust 'build' to your build folder
+
+// Handle React routing, return all requests to React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 //port
 const PORT = 8080 || process.env.PORT;
 
