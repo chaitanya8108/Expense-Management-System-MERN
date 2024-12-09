@@ -19,7 +19,7 @@ const HomePage = () => {
   const submitIconRef = useRef(null); // Reference for About Lordicon
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("_id");
+    const storedUserId = sessionStorage.getItem("_id");
     if (storedUserId) {
       setUserId(storedUserId);
     }
