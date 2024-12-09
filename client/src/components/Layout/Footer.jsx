@@ -20,9 +20,12 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             <lord-icon
-              src="https://cdn.lordicon.com/jvewmlrd.json"
-              trigger="hover"
-              colors="primary:#414257,secondary:#66eece"
+              src="https://cdn.lordicon.com/olkyggkm.json"
+              trigger="loop"
+              delay="900"
+              stroke="light"
+              state="in-reveal"
+              colors="primary:#109121,secondary:#9cf4a7"
               style={{ width: "5rem", height: "3.5rem" }}
             ></lord-icon>
           </a>
@@ -34,9 +37,12 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             <lord-icon
-              src="https://cdn.lordicon.com/ubpgwkmy.json"
-              trigger="hover"
-              colors="primary:#414257,secondary:#66eece"
+              src="https://cdn.lordicon.com/zkiskfnp.json"
+              trigger="loop"
+              delay="900"
+              stroke="light"
+              state="in-reveal"
+              colors="primary:#9cf4a7,secondary:#109121"
               style={{ width: "5rem", height: "3.5rem" }}
             ></lord-icon>
           </a>
@@ -48,10 +54,12 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             <lord-icon
-              src="https://cdn.lordicon.com/dsdlqjde.json"
-              trigger="hover"
-              state="hover-draw"
-              colors="primary:#414257,secondary:#66eece"
+              src="https://cdn.lordicon.com/ofrzywfo.json"
+              trigger="loop"
+              delay="900"
+              stroke="light"
+              state="in-reveal"
+              colors="primary:#109121,secondary:#9cf4a7"
               style={{ width: "5rem", height: "3.5rem" }}
             ></lord-icon>
           </a>
