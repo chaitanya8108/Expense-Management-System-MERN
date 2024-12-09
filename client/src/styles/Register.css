@@ -1,0 +1,11 @@
+@media (max-width: 1024px) {
+  .register-form {
+    width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .register-form {
+    width: 100%;
+  }
+}

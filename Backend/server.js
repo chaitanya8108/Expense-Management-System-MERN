@@ -27,7 +27,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://expense-management-system-mern-client.onrender.com",
+    origin: [
+      "https://expense-management-system-mern-client.onrender.com",
+      // "http://localhost:3000",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })

@@ -5,8 +5,8 @@ import { message } from "antd";
 import ErrorBoundary from "../../utils/ErrorBoundary";
 import "../../styles/Header.css";
 
-const Header = () => {
-  const [loginUserName, setLoginUserName] = useState("");
+const Header = ({ onLogout }) => {
+  // const [loginUserName, setLoginUserName] = useState("");
   const [loginUser, setLoginUser] = useState({});
   const [menuOpen, setMenuOpen] = useState(false); // State for hamburger menu
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false); // Profile dropdown state for large devices
@@ -18,10 +18,11 @@ const Header = () => {
   const lordIconStyles = { width: "3rem", height: "3rem", cursor: "pointer" };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
     if (user) {
       setLoginUser(user);
-      setLoginUserName(user.name); // Update the loginUserName state
+      // setLoginUserName(user.name);
     }
 
     // Close the profile dropdown when clicking outside
@@ -44,20 +45,20 @@ const Header = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [localStorage.getItem("user")]); // This will run once when the component mounts
-  // The empty array means the effect runs only on mount
+  }, []); // This will run once when the component mounts
 
   const logoutHandler = () => {
-    // Close all menus
     setMenuOpen(false);
     setProfileDropdownOpen(false);
+    // setLoginUserName("");
+    setLoginUser({});
 
-    // Remove user and navigate after menu state updates
     setTimeout(() => {
-      localStorage.removeItem("user");
+      sessionStorage.clear(); // Clears all data from sessionStorage
       message.success("Logout Successfully");
-      navigate("/login");
-    }, 100); // Add slight delay to ensure state updates before navigation
+      onLogout(); // Trigger the logout function passed as prop
+      navigate("/login"); // Redirect to login page
+    }, 100);
   };
 
   const handleProfileClick = () => {
@@ -107,6 +108,28 @@ const Header = () => {
               />
             </svg>
           </button>
+
+          {/* Conditionally Rendered Hamburger Menu Items */}
+          {menuOpen && (
+            <ul className="absolute top-12 right-0 bg-white shadow-lg rounded-lg p-4 space-y-4 w-full z-50">
+              <Link to="/expense">
+                <li className="text-gray-500 hover:text-black mb-2">Expense</li>
+              </Link>
+              {/* <Link to="/about">
+                <li className="text-gray-500 hover:text-black">About</li>
+              </Link> */}
+              <Link to="/contact">
+                <li className="text-gray-500 hover:text-black">Contact</li>
+              </Link>
+              <hr />
+              <button
+                className="text-gray-500 hover:text-black"
+                onClick={logoutHandler}
+              >
+                Logout
+              </button>
+            </ul>
+          )}
         </div>
 
         {/* Desktop Navbar Links */}
@@ -211,55 +234,6 @@ const Header = () => {
           </div>
         </ul>
       </div>
-
-      {/* Hamburger Menu Dropdown */}
-      {menuOpen && (
-        <div className="lg:hidden mt-2 bg-gray-100 rounded-md shadow-md">
-          {/* Profile Section for Small/Medium Devices */}
-          <div className="p-4 border-b flex items-center space-x-2">
-            <ErrorBoundary>
-              <lord-icon
-                src="https://cdn.lordicon.com/amtdygnu.json"
-                trigger="hover"
-                style={lordIconStyles}
-              ></lord-icon>
-            </ErrorBoundary>
-            <span className="text-gray-700 font-serif">{loginUserName}</span>
-          </div>
-
-          <ul>
-            <li>
-              <Link to="/expense" onClick={() => setMenuOpen(false)}>
-                <div className="px-4 py-2 text-gray-500 hover:bg-gray-200 hover:text-black font-serif">
-                  <b>Expenses</b>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" onClick={() => setMenuOpen(false)}>
-                <div className="px-4 py-2 text-gray-500 hover:bg-gray-200 hover:text-black font-serif">
-                  <b>About</b>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" onClick={() => setMenuOpen(false)}>
-                <div className="px-4 py-2 text-gray-500 hover:bg-gray-200 hover:text-black font-serif">
-                  <b>Contact</b>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={logoutHandler}
-                className="px-4 py-2 text-gray-500 hover:bg-gray-200 hover:text-black font-serif"
-              >
-                <b>Logout</b>
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
     </nav>
   );
 };

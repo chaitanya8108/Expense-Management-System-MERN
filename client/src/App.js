@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -8,17 +9,23 @@ import Expense from "./pages/Expense";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
+import { ProtectedRoutes } from "./ProtectedRoutes";
+import { useAuth } from "./AuthContext"; // Import the AuthContext
 
 function App() {
+  const { user, login, logout } = useAuth(); // Access user, login, and logout from context
+
+  useEffect(() => {
+    // This is no longer needed since the context manages auth state
+  }, []); // Runs once when component mounts
+
   return (
     <>
-      {/* Header */}
-      <Header />
+      {/* Header is shown only if authenticated */}
+      {user && <Header onLogout={logout} />}
 
       {/* Main Content */}
-
       <Routes>
-        {/* Home Page */}
         <Route
           path="/"
           element={
@@ -27,14 +34,8 @@ function App() {
             </ProtectedRoutes>
           }
         />
-
-        {/* Register Page */}
+        <Route path="/login" element={<Login onLogin={login} />} />
         <Route path="/register" element={<Register />} />
-
-        {/* Login Page */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Expense Page */}
         <Route
           path="/expense"
           element={
@@ -43,14 +44,22 @@ function App() {
             </ProtectedRoutes>
           }
         />
-
-        {/* About Page */}
-        <Route path="/about" element={<About />} />
-
-        {/* Contact Page */}
-        <Route path="/contact" element={<Contact />} />
-
-        {/* Dashboard Page */}
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoutes>
+              <About />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoutes>
+              <Contact />
+            </ProtectedRoutes>
+          }
+        />
         <Route
           path="/dashboard"
           element={
@@ -59,20 +68,13 @@ function App() {
             </ProtectedRoutes>
           }
         />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
 
       {/* Footer */}
       <Footer />
     </>
   );
-}
-
-export function ProtectedRoutes(props) {
-  if (localStorage.getItem("user")) {
-    return props.children;
-  } else {
-    return <Navigate to="/login" />;
-  }
 }
 
 export default App;

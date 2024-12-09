@@ -11,4 +11,29 @@
 
 body {
   overflow-x: hidden;
+  min-height: 100vh;
 }
+
+/* html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+}
+
+main {
+  flex: 1;
+  overflow: hidden;
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+} */

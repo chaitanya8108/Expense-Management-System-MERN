@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const { verifyToken } = require("../middleware/authMiddleware");
 const bodyParser = require("body-parser");
 const {
   loginController,
@@ -12,6 +13,7 @@ const {
   expenseDeleteController,
   deleteAllExpensesController,
   searchExpensesByExpenseName,
+  editExpenseController,
 } = require("../controllers/userController");
 
 // Router object
@@ -56,10 +58,19 @@ router.get("/expense/:expenseId", expenseGetController);
 // DELETE || DELETE EXPENSE
 router.delete("/expense/:expenseId", expenseDeleteController);
 
-// DELETE || DELETE EXPENSE
+// DELETE || DELETE ALL EXPENSES
 router.delete("/expense/deleteAll/:userId", deleteAllExpensesController);
 
 // Search expenses by name (GET request)
 router.get("/:userId/expenses", searchExpensesByExpenseName);
+
+// Edit expenses by name (PUT request)
+router.put("/expense/:expenseId", editExpenseController);
+
+// Example protected route
+router.get("/profile", verifyToken, (req, res) => {
+  // If the request reaches here, the user is authenticated
+  res.json({ msg: "This is your profile data", user: req.user });
+});
 
 module.exports = router;

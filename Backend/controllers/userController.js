@@ -1,18 +1,40 @@
 const userModel = require("../models/userModel");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Login callback
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.findOne({ email, password });
+    const user = await userModel.findOne({ email });
+
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User Not Found" });
     }
+
+    // Compare the hashed password with the plain text password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid password" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email }, // Payload
+      process.env.JWT_SECRET, // Secret key
+      { expiresIn: "30d" } // Token expiration (1 hour)
+    );
+    // sessionStorage.setItem("token", token);
+
     res.status(200).json({
       success: true,
-      user,
+      message: "Login successful",
+      token, // Send token to the frontend
+      user, // Optionally send the user details
     });
   } catch (error) {
     res.status(400).json({
@@ -34,8 +56,11 @@ const registerController = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Email is already registered" });
     }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new userModel({ name, email, password });
+    // Create new user
+    const newUser = new userModel({ name, email, password: hashedPassword });
     await newUser.save();
     res.status(201).json({
       success: true,
@@ -294,6 +319,56 @@ const searchExpensesByExpenseName = async (req, res) => {
   }
 };
 
+//Edit expense
+const editExpenseController = async (req, res) => {
+  try {
+    const { expenseId } = req.params; // Get the expenseId from the URL parameters
+    const { expname, expamount, expamounttype, expdate } = req.body; // Get the updated fields from the request body
+
+    // Validate input
+    if (!expenseId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Expense ID is required" });
+    }
+
+    // Construct the fields to be updated
+    const updatedFields = {};
+    if (expname) updatedFields["expense.$.expname"] = expname;
+    if (expamount) updatedFields["expense.$.expamount"] = parseFloat(expamount); // Ensure amount is a number
+    if (expamounttype) updatedFields["expense.$.expamounttype"] = expamounttype;
+    if (expdate) updatedFields["expense.$.expdate"] = new Date(expdate);
+
+    // Update the specific expense using array filters
+    const user = await userModel.findOneAndUpdate(
+      { "expense._id": expenseId }, // Find the user with the matching expenseId in their expense array
+      { $set: updatedFields }, // Update the matched expense's fields
+      { new: true } // Return the updated document
+    );
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Expense not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Expense updated successfully",
+      updatedExpense: user.expense.find(
+        (exp) => exp._id.toString() === expenseId
+      ),
+    });
+  } catch (error) {
+    console.error("Error in editExpenseController:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while editing the expense",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   loginController,
   registerController,
@@ -304,4 +379,5 @@ module.exports = {
   expenseDeleteController,
   deleteAllExpensesController,
   searchExpensesByExpenseName,
+  editExpenseController,
 };

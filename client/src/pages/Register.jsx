@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/Register.css";
 import Spinner from "../components/Spinner";
 const Register = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Register = () => {
       setLoading(true);
       await axios.post(
         "https://expense-management-system-mern-api.onrender.com/api/v1/users/register",
+        // "http://localhost:8080/api/v1/users/register",
         values
       );
       message.success("Registration Successful");
@@ -25,7 +27,7 @@ const Register = () => {
 
   //prevent for login user
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (sessionStorage.getItem("user")) {
       navigate("/");
     }
   }, [navigate]);
@@ -37,7 +39,7 @@ const Register = () => {
         <Form
           layout="vertical"
           onFinish={submitHandler}
-          className="min-h-[50vh] min-w-[30vw] p-5"
+          className="register-form min-h-[50vh] min-w-[30vw] p-5"
         >
           <Form.Item label="Name" name="name" className="font-serif">
             <Input className="p-2 rounded hover:shadow-xl" />
@@ -53,9 +55,12 @@ const Register = () => {
               <strong className="mr-2 font-serif">Already a user ?</strong>
               <Link to="/login">
                 {" "}
-                <button className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif">
+                <a
+                  className="underline text-blue-700 hover:underline hover:text-blue-400 font-serif"
+                  href="#"
+                >
                   SignIn
-                </button>
+                </a>
               </Link>
             </div>
             <button className="btn btn-primary">Register</button>

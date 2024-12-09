@@ -3,15 +3,26 @@ import ReactDOM from "react-dom/client";
 import "antd/dist/antd.min.css";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import { AuthProvider } from "./AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <div className="">
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+  <div
+    className=""
+    style={{
+      height: "100vh",
+      display: "flex",
+      justifyContent: "space-between",
+      flexDirection: "column",
+    }}
+  >
+    <AuthProvider>
+      <Router>
+        <App />
+      </Router>
+    </AuthProvider>
   </div>
 );
 

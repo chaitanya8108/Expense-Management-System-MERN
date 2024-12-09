@@ -5,9 +5,10 @@ import {
   handleExpenseButtonClick,
   deleteAllExpenses,
   searchExpensesByExpenseName,
-} from "../utils/ExpenseUtils"; // Importing the API function
+  expenseEdit, // Importing the edit function
+} from "../utils/ExpenseUtils";
 import ErrorBoundary from "../utils/ErrorBoundary";
-import { message, Modal, Input, Button, Spin } from "antd";
+import { message, Modal, Input, Button } from "antd";
 import "../styles/Expense.css";
 
 const Expense = () => {
@@ -16,19 +17,20 @@ const Expense = () => {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isSearchModalVisible, setIsSearchModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Edit modal state
+  const [currentExpense, setCurrentExpense] = useState(null); // Currently edited expense
 
   useEffect(() => {
-    // Fetching expenses when component mounts
     const fetchExpenses = async () => {
-      const expenses = await handleExpenseButtonClick(); // Get expenses from API
+      const expenses = await handleExpenseButtonClick();
       if (expenses && expenses.length) {
         setExpenseArray(expenses);
-        setFilteredExpenses(expenses); // Initialize filteredExpenses
+        setFilteredExpenses(expenses);
       } else {
         console.log("No expenses found.");
       }
-      setLoading(false); // Stop the spinner after data is fetched
+      setLoading(false);
     };
 
     fetchExpenses();
@@ -39,9 +41,8 @@ const Expense = () => {
   };
 
   const handleDashboardClick = () => {
-    console.log("Navigating to dashboard with expenses:", expenseArray);
     navigate("/dashboard", {
-      state: { expenses: filteredExpenses },
+      state: { expenses: expenseArray },
     });
   };
 
@@ -76,8 +77,8 @@ const Expense = () => {
 
   const handleDeleteExpenseById = async (expenseId) => {
     try {
-      console.log("Deleting expense with ID:", expenseId);
       await deleteExpenseById(expenseId);
+      message.success("Expense deleted successfully!");
       setExpenseArray((prev) =>
         prev.filter((expense) => expense._id !== expenseId)
       );
@@ -91,18 +92,13 @@ const Expense = () => {
 
   const handleSearchClick = async () => {
     try {
-      const userId = localStorage.getItem("_id");
-
-      // Check if userId exists in localStorage
-      if (!userId) {
-        message.error("User ID not found in localStorage.");
+      const user = sessionStorage.getItem("_id");
+      if (!user) {
+        message.error("User ID not found in sessionStorage.");
         return;
       }
 
-      console.log("userId retrieved from localStorage:", userId); // Check the userId
-
-      // Ensure it's a string before passing to the backend
-      const results = await searchExpensesByExpenseName(userId, searchQuery);
+      const results = await searchExpensesByExpenseName(user, searchQuery);
       setFilteredExpenses(results);
       setIsSearchModalVisible(false);
       setSearchQuery("");
@@ -113,19 +109,41 @@ const Expense = () => {
     }
   };
 
+  const handleEditClick = (expense) => {
+    setCurrentExpense(expense); // Set the selected expense for editing
+    setIsEditModalVisible(true); // Open the edit modal
+  };
+
+  const handleEditSubmit = async () => {
+    if (!currentExpense) return;
+
+    try {
+      // Call the expenseEdit function with the updated expense data
+      const updatedExpense = await expenseEdit(
+        currentExpense._id,
+        currentExpense
+      );
+
+      if (updatedExpense) {
+        // Update local state after successful edit
+        const updatedExpenses = expenseArray.map((exp) =>
+          exp._id === updatedExpense._id ? updatedExpense : exp
+        );
+        setExpenseArray(updatedExpenses);
+        setFilteredExpenses(updatedExpenses);
+
+        // Reset currentExpense and close the modal
+        setCurrentExpense(null); // Clear the inputs
+        setIsEditModalVisible(false); // Close the modal
+      }
+    } catch (error) {
+      console.error("Error updating expense:", error);
+      message.error("Failed to update expense.");
+    }
+  };
+
   const cardColor = () => {
-    const colors = [
-      "#ebf4f5",
-      // "#e9edc9",
-      // "#caf0f8",
-      // "#ffcdb2",
-      // "#ffe5ec",
-      // "#edf6f9",
-      // "#f8edeb",
-      // "#fdc5f5",
-      // "#cddafd",
-      // "#e9f5db",
-    ];
+    const colors = ["#ebf4f5"];
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
   };
@@ -137,8 +155,7 @@ const Expense = () => {
           filteredExpenses.length > 0 ? "leftDivStart" : "leftDivCenter"
         }`}
       >
-        {loading ? ( // Conditionally render spinner while loading
-          // <Spin size="large" className="loading-spinner" />
+        {loading ? (
           <ErrorBoundary>
             <lord-icon
               src="https://cdn.lordicon.com/idylhtwd.json"
@@ -160,7 +177,7 @@ const Expense = () => {
                     className="expense-card border hover:shadow-xl font-serif"
                     style={{ backgroundColor: cardColor() }}
                   >
-                    <div className="listDiv p-2  rounded shadow-md">
+                    <div className="listDiv p-2 rounded shadow-md">
                       <li>Expense Name : {expense.expname}</li>
                       <li>Expense Amount (INR) : {expense.expamount}</li>
                       <li>Amount Category : {expense.expamounttype}</li>
@@ -170,12 +187,6 @@ const Expense = () => {
                       </li>
                     </div>
                     <div className="card-operations flex flex-col justify-between items-center">
-                      {/* <button
-                        className="btn btn-danger"
-                        onClick={() => handleDeleteExpenseById(expense._id)}
-                      >
-                        delete
-                      </button> */}
                       <div className="del shadow-md rounded">
                         <ErrorBoundary>
                           <lord-icon
@@ -208,6 +219,7 @@ const Expense = () => {
                               height: "2.5rem",
                               cursor: "pointer",
                             }}
+                            onClick={() => handleEditClick(expense)}
                           ></lord-icon>
                         </ErrorBoundary>
                       </div>
@@ -221,6 +233,74 @@ const Expense = () => {
           <strong className="font-serif">No expenses found.</strong>
         )}
       </div>
+
+      {/* Edit Modal */}
+      <Modal
+        title="Edit Expense"
+        open={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsEditModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleEditSubmit}>
+            Submit
+          </Button>,
+        ]}
+        className=""
+      >
+        {currentExpense && (
+          <>
+            <Input
+              placeholder="Expense Name"
+              value={currentExpense.expname}
+              onChange={(e) =>
+                setCurrentExpense({
+                  ...currentExpense,
+                  expname: e.target.value,
+                })
+              }
+              className="mb-4  rounded p-2 shadow-md"
+            />
+            <Input
+              placeholder="Expense Amount"
+              type="number"
+              value={currentExpense.expamount}
+              onChange={(e) =>
+                setCurrentExpense({
+                  ...currentExpense,
+                  expamount: Number(e.target.value),
+                })
+              }
+              className="mb-4  rounded p-2 shadow-md"
+            />
+            <Input
+              placeholder="Expense Category"
+              value={currentExpense.expamounttype}
+              onChange={(e) =>
+                setCurrentExpense({
+                  ...currentExpense,
+                  expamounttype: e.target.value,
+                })
+              }
+              className="mb-4 rounded p-2 shadow-md"
+            />
+            <Input
+              placeholder="Expense Date"
+              type="date"
+              value={currentExpense.expdate}
+              onChange={(e) =>
+                setCurrentExpense({
+                  ...currentExpense,
+                  expdate: e.target.value,
+                })
+              }
+              className=" rounded p-2 shadow-md"
+            />
+          </>
+        )}
+      </Modal>
+
       <div className="rightDiv bg-gray-100">
         <div className="searchExpense">
           <ErrorBoundary>
@@ -235,6 +315,27 @@ const Expense = () => {
             ></lord-icon>
           </ErrorBoundary>
         </div>
+        {/* Search Modal */}
+        <Modal
+          title="Search Expenses"
+          open={isSearchModalVisible}
+          onCancel={() => setIsSearchModalVisible(false)} // Close modal on cancel
+          footer={[
+            <Button key="cancel" onClick={() => setIsSearchModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button key="search" type="primary" onClick={handleSearchClick}>
+              Search
+            </Button>,
+          ]}
+        >
+          <Input
+            placeholder="Enter expense name"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="rounded p-2 shadow-md"
+          />
+        </Modal>
         <div className="expenseCalculate">
           <div className="expenseTotalDiv">
             {filteredExpenses.length ? (
@@ -267,9 +368,7 @@ const Expense = () => {
               onClick={handleDeleteAllExpenses}
             ></lord-icon>
           </ErrorBoundary>
-          <strong className="delAllText mb-4">
-            Delete All Expenses <span>(Delete all)</span>
-          </strong>
+          <strong className="delAllText mb-4">Delete All Expenses</strong>
         </div>
       </div>
     </div>

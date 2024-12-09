@@ -9,6 +9,8 @@ const Dashboard = () => {
   const location = useLocation();
   const { expenses } = location.state || { expenses: [] };
 
+  console.log("Dashboard state:", location.state); // Debug log
+
   return (
     <div className="dashboard">
       <p className="dashboard-title font-serif">EXPENSE DASHBOARD</p>
